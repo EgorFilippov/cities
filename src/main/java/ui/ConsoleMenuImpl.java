@@ -21,7 +21,7 @@ public class ConsoleMenuImpl implements Menu {
     @Override
     public void startMenu() {
 
-        final String FILE_NAME = "/Users/u19571094/IdeaProjects/testProject1/src/main/resources/cities.txt";
+        final String FILE_NAME = "./src/main/resources/cities.txt";
 
         while (true) {
             System.out.println("=== DB Worker Menu ===");
@@ -33,7 +33,7 @@ public class ConsoleMenuImpl implements Menu {
             System.out.println("6. Select sorted cities by name and district");
             System.out.println("7. Exit");
             System.out.println("Press number key to continue...");
-            int x = 0;
+            int x;
             Scanner scanner = new Scanner(System.in);
             x = scanner.nextInt();
 

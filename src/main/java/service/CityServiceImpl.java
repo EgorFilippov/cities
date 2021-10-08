@@ -2,7 +2,7 @@ package service;
 
 import entity.City;
 import repositories.CityRepo;
-import util.ReadFileImpl;
+import util.ReadFile;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class CityServiceImpl implements CityService {
     }
 
     public String addToDatabaseFromFile(String fileName) {
-        String inputDraftStringData = ReadFileImpl.read(fileName);
+        String inputDraftStringData = ReadFile.read(fileName);
         return cityRepo.addToDatabase(inputDraftStringData, tableName);
     }
 

@@ -11,12 +11,11 @@ public class Main
 
 {
 
-    public static void main(String[] args) throws SQLException, ClassNotFoundException, IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException {
 
         CityRepo cityRepo = new CityRepoImpl();
         CityServiceImpl cityServiceImpl = new CityServiceImpl(cityRepo);
         Menu consoleMenu = new ConsoleMenuImpl(cityServiceImpl);
-//        Menu consoleMenu = new ConsoleMenu(cityServiceImpl, cityRepoImpl);
         consoleMenu.startMenu();
     }
 }

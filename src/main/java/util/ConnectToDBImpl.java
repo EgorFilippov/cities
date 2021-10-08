@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class ConnectToDBImpl {
     public static Connection getConnection()  {
         final String TABLE_NAME = "CITIES_TABLE";
-        final String DB_URL = "jdbc:h2:/Users/u19571094/IdeaProjects/testProject1";
+        final String DB_URL = "jdbc:h2:./src/main/resources/db";
         final String DB_Driver = "org.h2.Driver";
         Connection connection = null;
         try {
