@@ -5,8 +5,8 @@ import repositories.CityRepoImpl;
 import service.CityServiceImpl;
 import util.ReadCityFromConsole;
 
-import java.sql.SQLOutput;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class ConsoleMenuImpl implements Menu {
@@ -31,7 +31,9 @@ public class ConsoleMenuImpl implements Menu {
             System.out.println("4. Select all cities");
             System.out.println("5. Select sorted cities by name");
             System.out.println("6. Select sorted cities by name and district");
-            System.out.println("7. Exit");
+            System.out.println("7. Select city with max population");
+            System.out.println("8. Cities count in regions");
+            System.out.println("9. Exit");
             System.out.println("Press number key to continue...");
             int x;
             Scanner scanner = new Scanner(System.in);
@@ -87,6 +89,14 @@ public class ConsoleMenuImpl implements Menu {
                     break;
                 }
                 case 7: {
+                    System.out.println(cityServiceImpl.selectCityWithMaxPopulation());
+                    break;
+                }
+                case 8: {
+                    System.out.println(cityServiceImpl.citiesCountInRegion());
+                    break;
+                }
+                case 9: {
                     System.exit(0);
                     break;
                 }

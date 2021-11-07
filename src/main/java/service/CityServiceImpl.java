@@ -5,12 +5,13 @@ import repositories.CityRepo;
 import util.ReadFile;
 
 import java.util.List;
+import java.util.Map;
 
 public class CityServiceImpl implements CityService {
 
     CityRepo cityRepo;
     String tableName = "CITIES_TABLE";
-    
+
     public CityServiceImpl (CityRepo cityRepo) {
         this.cityRepo = cityRepo;
     }
@@ -40,4 +41,11 @@ public class CityServiceImpl implements CityService {
         return cityRepo.selectSortedCitiesByNameAndDistrict(tableName);
     }
 
+    public City selectCityWithMaxPopulation() {
+        return cityRepo.selectCityWithMaxPopulation(tableName);
+    }
+
+    public Map<String, String> citiesCountInRegion() {
+        return cityRepo.citiesCountInRegion(tableName);
+    }
 }

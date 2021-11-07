@@ -3,9 +3,7 @@ import entity.City;
 import util.ConnectToDBImpl;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class CityRepoImpl implements CityRepo {
 
@@ -143,5 +141,52 @@ public class CityRepoImpl implements CityRepo {
         catch (SQLException e){
         }
         return null;
+    }
+
+    @Override
+    public City selectCityWithMaxPopulation(String tableName) {
+        String sqlQuery = "SELECT * from " + tableName + " WHERE POPULATION = (SELECT MAX (POPULATION) FROM " + tableName +");";
+        try (Statement statement = ConnectToDBImpl.getConnection().createStatement()) {
+            ResultSet resultSet = statement.executeQuery(sqlQuery);
+            resultSet.next();
+            City city = new City();
+            city.setName(resultSet.getString(2));
+            city.setRegion(resultSet.getString(3));
+            city.setDistrict(resultSet.getString(4));
+            city.setPopulation(resultSet.getInt(5));
+            city.setFoundation(resultSet.getInt(6));
+            return city;
+        }
+        catch (SQLException e){
+            System.out.println("Ошибка получения данных");
+        }
+        return null;
+    }
+
+    @Override
+    public Map<String, String> citiesCountInRegion(String tableName) {
+        String sqlQuery = "SELECT DISTINCT REGION FROM " + tableName + ";";
+        String sqlQuery1 = "SELECT COUNT(*) FROM " + tableName + " WHERE REGION=";
+        Map <String, String> result = new HashMap<String, String>();
+        try (Statement statement = ConnectToDBImpl.getConnection().createStatement()) {
+            ResultSet resultSet = statement.executeQuery(sqlQuery);
+            List<City> cityList = new ArrayList<>();
+            int counter = 0;
+            while (resultSet.next()) {
+                try (Statement statement1 = ConnectToDBImpl.getConnection().createStatement()) {
+                    ResultSet resultSet1 = statement1.executeQuery(sqlQuery1 + "'" + resultSet.getString(1) + "';");
+                    resultSet1.next();
+                    result.put(resultSet.getString(1), String.valueOf(resultSet1.getInt(1)));
+
+                } catch (SQLException e) {
+                    System.out.println("Ошибка подсчет городов");
+                }
+
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Ошибка подсчет регионов");
+        }
+        return result;
     }
 }
