@@ -1,18 +1,15 @@
 package ui;
 
 import entity.City;
-import repositories.CityRepoImpl;
 import service.CityServiceImpl;
 import util.ReadCityFromConsole;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 public class ConsoleMenuImpl implements Menu {
 
     CityServiceImpl cityServiceImpl;
-    CityRepoImpl cityRepoImpl;
 
     public ConsoleMenuImpl(CityServiceImpl cityServiceImpl) {
         this.cityServiceImpl = cityServiceImpl;
@@ -53,27 +50,25 @@ public class ConsoleMenuImpl implements Menu {
                     break;
                 }
                 case 4: {
-                        List<City> city = cityServiceImpl.selectAllCities();
-                        if (city != null) {
-                            for (City c : city) {
-                                System.out.println(c.toString());
-                            }
+                    List<City> city = cityServiceImpl.selectAllCities();
+                    if (city != null) {
+                        for (City c : city) {
+                            System.out.println(c.toString());
                         }
-                        else {
-                            System.out.println("No results");
-                        }
+                    } else {
+                        System.out.println("No results");
+                    }
                     break;
                 }
                 case 5: {
-                        List<City> city = cityServiceImpl.selectSortedCitiesByName();
-                        if (city != null) {
-                            for (City c : city) {
-                                System.out.println(c.toString());
-                            }
+                    List<City> city = cityServiceImpl.selectSortedCitiesByName();
+                    if (city != null) {
+                        for (City c : city) {
+                            System.out.println(c.toString());
                         }
-                        else {
-                            System.out.println("No results");
-                        }
+                    } else {
+                        System.out.println("No results");
+                    }
                     break;
                 }
                 case 6: {
@@ -82,8 +77,7 @@ public class ConsoleMenuImpl implements Menu {
                         for (City c : city) {
                             System.out.println(c.toString());
                         }
-                    }
-                    else {
+                    } else {
                         System.out.println("No results");
                     }
                     break;

@@ -1,4 +1,5 @@
 package repositories;
+
 import entity.City;
 import util.ConnectToDBImpl;
 
@@ -8,13 +9,11 @@ import java.util.*;
 public class CityRepoImpl implements CityRepo {
 
     @Override
-    //онли сити обжект инпут
     public String addToDatabase(String inputDraftStringData, String tableName) {
         createTable(tableName);
         String sqlQuery = "INSERT INTO " + tableName + " (NAME, REGION, DISTRICT, POPULATION, FOUNDATION) VALUES ( ?, ?, ?, ?, ?)";
         String result = "";
         PreparedStatement preparedStatement;
-        //connect and statement from try w res
         try {
             preparedStatement = ConnectToDBImpl.getConnection().prepareStatement(sqlQuery);
             Scanner scan = new Scanner(inputDraftStringData);
@@ -27,8 +26,8 @@ public class CityRepoImpl implements CityRepo {
                     preparedStatement.setString(1, scan1.next());
                     preparedStatement.setString(2, scan1.next());
                     preparedStatement.setString(3, scan1.next());
-                    preparedStatement.setLong(4, Long.valueOf(scan1.next()));
-                    preparedStatement.setInt(5, Integer.valueOf(scan1.next()));
+                    preparedStatement.setLong(4, scan1.nextLong());
+                    preparedStatement.setInt(5, scan1.nextInt());
                     preparedStatement.executeUpdate();
                     result = "File successfully added to database";
 
@@ -48,7 +47,7 @@ public class CityRepoImpl implements CityRepo {
     public String addOneCity(City city, String tableName) {
         createTable(tableName);
         String sqlQuery = "INSERT INTO " + tableName + " (NAME, REGION, DISTRICT, POPULATION, FOUNDATION) VALUES ( ?, ?, ?, ?, ?)";
-        String result = "City added successful";
+        String result;
         try (PreparedStatement preparedStatement = ConnectToDBImpl.getConnection().prepareStatement(sqlQuery)) {
             preparedStatement.setString(1, city.getName());
             preparedStatement.setString(2, city.getRegion());
@@ -65,13 +64,12 @@ public class CityRepoImpl implements CityRepo {
 
     @Override
     public String createTable(String tableName) {
-        String result = "Error: Creating table error";
+        String result;
         String sqlQuery = "CREATE TABLE IF NOT EXISTS " + tableName + " (ID INT NOT NULL AUTO_INCREMENT, NAME VARCHAR(255) NOT NULL, REGION VARCHAR(255) NOT NULL, DISTRICT VARCHAR(255) NOT NULL, POPULATION INT NOT NULL, FOUNDATION INT NOT NULL, PRIMARY KEY (ID, NAME))";
         try (PreparedStatement preparedStatement = ConnectToDBImpl.getConnection().prepareStatement(sqlQuery)) {
             preparedStatement.executeUpdate();
             result = "Table created";
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             return "Error: Creating table error";
         }
         return result;
@@ -82,7 +80,7 @@ public class CityRepoImpl implements CityRepo {
         String sqlQuery = "SELECT * from " + tableName + ";";
         try (Statement statement = ConnectToDBImpl.getConnection().createStatement()) {
             ResultSet resultSet = statement.executeQuery(sqlQuery);
-            List <City> cityList = new ArrayList<>();
+            List<City> cityList = new ArrayList<>();
             while (resultSet.next()) {
                 City city = new City();
                 city.setName(resultSet.getString(2));
@@ -93,18 +91,18 @@ public class CityRepoImpl implements CityRepo {
                 cityList.add(city);
             }
             return cityList;
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
+            System.out.println("Ошибка считывания городов");
         }
         return null;
     }
 
     @Override
     public List<City> selectSortedCitiesByName(String tableName) {
-        String sqlQuery = "SELECT * from " + tableName + " ORDER BY NAME ASC;";
+        String sqlQuery = "SELECT * from " + tableName + " ORDER BY NAME;";
         try (Statement statement = ConnectToDBImpl.getConnection().createStatement()) {
             ResultSet resultSet = statement.executeQuery(sqlQuery);
-            List <City> cityList = new ArrayList<>();
+            List<City> cityList = new ArrayList<>();
             while (resultSet.next()) {
                 City city = new City();
                 city.setName(resultSet.getString(2));
@@ -115,18 +113,18 @@ public class CityRepoImpl implements CityRepo {
                 cityList.add(city);
             }
             return cityList;
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
+            System.out.println("Ошибка считывания или сортировки городов");
         }
         return null;
     }
 
     @Override
     public List<City> selectSortedCitiesByNameAndDistrict(String tableName) {
-        String sqlQuery = "SELECT * from " + tableName + " ORDER BY DISTRICT ASC, NAME ASC;";
+        String sqlQuery = "SELECT * from " + tableName + " ORDER BY DISTRICT, NAME;";
         try (Statement statement = ConnectToDBImpl.getConnection().createStatement()) {
             ResultSet resultSet = statement.executeQuery(sqlQuery);
-            List <City> cityList = new ArrayList<>();
+            List<City> cityList = new ArrayList<>();
             while (resultSet.next()) {
                 City city = new City();
                 city.setName(resultSet.getString(2));
@@ -137,15 +135,15 @@ public class CityRepoImpl implements CityRepo {
                 cityList.add(city);
             }
             return cityList;
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
+            System.out.println("Ошибка считывания или сортировки городов");
         }
         return null;
     }
 
     @Override
     public City selectCityWithMaxPopulation(String tableName) {
-        String sqlQuery = "SELECT * from " + tableName + " WHERE POPULATION = (SELECT MAX (POPULATION) FROM " + tableName +");";
+        String sqlQuery = "SELECT * from " + tableName + " WHERE POPULATION = (SELECT MAX (POPULATION) FROM " + tableName + ");";
         try (Statement statement = ConnectToDBImpl.getConnection().createStatement()) {
             ResultSet resultSet = statement.executeQuery(sqlQuery);
             resultSet.next();
@@ -156,8 +154,7 @@ public class CityRepoImpl implements CityRepo {
             city.setPopulation(resultSet.getInt(5));
             city.setFoundation(resultSet.getInt(6));
             return city;
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Ошибка получения данных");
         }
         return null;
@@ -167,7 +164,7 @@ public class CityRepoImpl implements CityRepo {
     public Map<String, String> citiesCountInRegion(String tableName) {
         String sqlQuery = "SELECT DISTINCT REGION FROM " + tableName + ";";
         String sqlQuery1 = "SELECT COUNT(*) FROM " + tableName + " WHERE REGION=";
-        Map <String, String> result = new HashMap<String, String>();
+        Map<String, String> result = new HashMap<>();
         try (Statement statement = ConnectToDBImpl.getConnection().createStatement()) {
             ResultSet resultSet = statement.executeQuery(sqlQuery);
             List<City> cityList = new ArrayList<>();

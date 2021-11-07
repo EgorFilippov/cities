@@ -12,7 +12,7 @@ public class CityServiceImpl implements CityService {
     CityRepo cityRepo;
     String tableName = "CITIES_TABLE";
 
-    public CityServiceImpl (CityRepo cityRepo) {
+    public CityServiceImpl(CityRepo cityRepo) {
         this.cityRepo = cityRepo;
     }
 
@@ -29,7 +29,7 @@ public class CityServiceImpl implements CityService {
         return cityRepo.createTable(tableName);
     }
 
-    public List<City> selectAllCities () {
+    public List<City> selectAllCities() {
         return cityRepo.selectAllCities(tableName);
     }
 

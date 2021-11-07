@@ -5,7 +5,7 @@ import entity.City;
 import java.util.Scanner;
 
 public class ReadCityFromConsole {
-    public static City readFromConsole () {
+    public static City readFromConsole() {
         Scanner scanner = new Scanner(System.in);
         City city = new City();
 
