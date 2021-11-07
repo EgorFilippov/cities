@@ -21,7 +21,6 @@ public class CityRepoImpl implements CityRepo {
             while (scan.hasNext()) {
                 Scanner scan1 = new Scanner(scan.next());
                 scan1.useDelimiter(",");
-                StringBuilder sb = new StringBuilder();
                 try {
                     preparedStatement.setString(1, scan1.next());
                     preparedStatement.setString(2, scan1.next());
@@ -167,8 +166,6 @@ public class CityRepoImpl implements CityRepo {
         Map<String, String> result = new HashMap<>();
         try (Statement statement = ConnectToDBImpl.getConnection().createStatement()) {
             ResultSet resultSet = statement.executeQuery(sqlQuery);
-            List<City> cityList = new ArrayList<>();
-            int counter = 0;
             while (resultSet.next()) {
                 try (Statement statement1 = ConnectToDBImpl.getConnection().createStatement()) {
                     ResultSet resultSet1 = statement1.executeQuery(sqlQuery1 + "'" + resultSet.getString(1) + "';");
